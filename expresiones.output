@@ -1,0 +1,2329 @@
+Terminales no usados en la gramática
+
+   REPETIR
+
+
+Gramática
+
+    0 $accept: programa $end
+
+    1 programa: siguienteLineaCond bloqueVars bloqueMuebles bloqueHabitaciones
+
+    2 siguienteLin: '\n'
+    3             | siguienteLin '\n'
+
+    4 siguienteLineaCond: %empty
+    5                   | siguienteLineaCond '\n'
+
+    6 bloqueVars: %empty
+    7           | Variables siguienteLin secuenciaVariables
+
+    8 secuenciaVariables: %empty
+    9                   | secuenciaVariables definicionVars
+
+   10 definicionVars: ENTERO secuenciaId siguienteLin
+   11               | NUMREAL secuenciaId siguienteLin
+   12               | LOG secuenciaId siguienteLin
+   13               | ENTERO IDVariable ASIGNACION expresion siguienteLin
+   14               | NUMREAL IDVariable ASIGNACION expresion siguienteLin
+   15               | LOG IDVariable ASIGNACION expresion_bool siguienteLin
+   16               | IDVariable ASIGNACION expresion siguienteLin
+   17               | IDVariable ASIGNACION expresion_bool siguienteLin
+   18               | error siguienteLin
+
+   19 secuenciaId: IDVariable
+   20            | secuenciaId COMA IDVariable
+
+   21 bloqueMuebles: MUEBLES siguienteLin secuenciaMuebles
+
+   22 secuenciaMuebles: definicionMueble
+   23                 | secuenciaMuebles definicionMueble
+
+   24 definicionMueble: VARIABLEMAYUS ASIGNACIONIGUAL MENOR RECTANGULO COMA expresion COMA expresion COMA COLOR MAYOR siguienteLin
+   25                 | VARIABLEMAYUS ASIGNACIONIGUAL MENOR CIRCULO COMA expresion COMA COLOR MAYOR siguienteLin
+   26                 | error siguienteLin
+
+   27 bloqueHabitaciones: definicionHabitacion
+   28                   | bloqueHabitaciones definicionHabitacion
+
+   29 $@1: %empty
+
+   30 $@2: %empty
+
+   31 definicionHabitacion: INIHABITACION $@1 PARENTIZQ expresion COMA expresion PARENTDER CADENACOMILLAS $@2 DOSPUNTOS siguienteLin secCondiciones FINHABITACION siguienteLin
+
+   32 secuenciaInstrucciones: definicionInstruccion
+   33                       | secuenciaInstrucciones definicionInstruccion
+
+   34 definicionInstruccion: SITUAR PARENTIZQ VARIABLEMAYUS COMA expresion COMA expresion PARENTDER siguienteLin
+   35                      | PAUSA PARENTIZQ expresion PARENTDER siguienteLin
+   36                      | MENSAJE PARENTIZQ CADENACOMILLAS PARENTDER siguienteLin
+   37                      | IDVariable ASIGNACION expresion siguienteLin
+
+   38 secCondiciones: defCondicion secCondiciones
+   39               | definicionInstruccion secCondiciones
+   40               | %empty
+
+   41 defCondicion: condicionSi
+   42             | condicionSi condicionSino
+
+   43 $@3: %empty
+
+   44 condicionSi: SI PARENTIZQ expresion_bool PARENTDER $@3 '{' siguienteLineaCond secuenciaInstrucciones '}' siguienteLin
+
+   45 $@4: %empty
+
+   46 condicionSino: SINO $@4 '{' siguienteLineaCond secuenciaInstrucciones '}' siguienteLin
+
+   47 expresion: NUMERO
+   48          | REAL
+   49          | IDVariable
+   50          | '(' expresion ')'
+   51          | expresion '+' expresion
+   52          | expresion '-' expresion
+   53          | expresion '*' expresion
+   54          | expresion '/' expresion
+   55          | expresion '%' expresion
+   56          | '-' expresion
+
+   57 expresion_bool: FALSE
+   58               | TRUE
+   59               | expresion MAYOR expresion
+   60               | expresion MENOR expresion
+   61               | expresion MAYOR_IGUAL expresion
+   62               | expresion MENOR_IGUAL expresion
+   63               | expresion IGUAL expresion
+   64               | expresion DISTINTO expresion
+   65               | expresion_bool IGUAL expresion_bool
+   66               | expresion_bool DISTINTO expresion_bool
+   67               | expresion_bool OR expresion_bool
+   68               | expresion_bool AND expresion_bool
+   69               | NOT expresion_bool
+   70               | '(' expresion_bool ')'
+
+
+Terminales con las reglas donde aparecen
+
+$end (0) 0
+'\n' (10) 2 3 5
+'%' (37) 55
+'(' (40) 50 70
+')' (41) 50 70
+'*' (42) 53
+'+' (43) 51
+'-' (45) 52 56
+'/' (47) 54
+'{' (123) 44 46
+'}' (125) 44 46
+error (256) 18 26
+TRUE (258) 58
+FALSE (259) 57
+NUMERO (260) 47
+REAL (261) 48
+ASIGNACION (262) 13 14 15 16 17 37
+ASIGNACIONIGUAL (263) 24 25
+AND (264) 68
+OR (265) 67
+NOT (266) 69
+MAYOR (267) 24 25 59
+MAYOR_IGUAL (268) 61
+MENOR (269) 24 25 60
+MENOR_IGUAL (270) 62
+IGUAL (271) 63 65
+DISTINTO (272) 64 66
+IDVariable (273) 13 14 15 16 17 19 20 37 49
+VARIABLEMAYUS (274) 24 25 34
+Variables (275) 7
+MUEBLES (276) 21
+INIHABITACION (277) 31
+FINHABITACION (278) 31
+ENTERO (279) 10 13
+NUMREAL (280) 11 14
+LOG (281) 12 15
+COLOR (282) 24 25
+RECTANGULO (283) 24
+CIRCULO (284) 25
+COMA (285) 20 24 25 31 34
+DOSPUNTOS (286) 31
+CADENACOMILLAS (287) 31 36
+PARENTIZQ (288) 31 34 35 36 44
+PARENTDER (289) 31 34 35 36 44
+PAUSA (290) 35
+MENSAJE (291) 36
+SITUAR (292) 34
+SI (293) 44
+SINO (294) 46
+REPETIR (295)
+menos (296)
+
+
+No terminales con las reglas donde aparecen
+
+$accept (52)
+    en la izquierda: 0
+programa (53)
+    en la izquierda: 1, en la derecha: 0
+siguienteLin (54)
+    en la izquierda: 2 3, en la derecha: 3 7 10 11 12 13 14 15 16 17
+    18 21 24 25 26 31 34 35 36 37 44 46
+siguienteLineaCond (55)
+    en la izquierda: 4 5, en la derecha: 1 5 44 46
+bloqueVars (56)
+    en la izquierda: 6 7, en la derecha: 1
+secuenciaVariables (57)
+    en la izquierda: 8 9, en la derecha: 7 9
+definicionVars (58)
+    en la izquierda: 10 11 12 13 14 15 16 17 18, en la derecha: 9
+secuenciaId (59)
+    en la izquierda: 19 20, en la derecha: 10 11 12 20
+bloqueMuebles (60)
+    en la izquierda: 21, en la derecha: 1
+secuenciaMuebles (61)
+    en la izquierda: 22 23, en la derecha: 21 23
+definicionMueble (62)
+    en la izquierda: 24 25 26, en la derecha: 22 23
+bloqueHabitaciones (63)
+    en la izquierda: 27 28, en la derecha: 1 28
+definicionHabitacion (64)
+    en la izquierda: 31, en la derecha: 27 28
+$@1 (65)
+    en la izquierda: 29, en la derecha: 31
+$@2 (66)
+    en la izquierda: 30, en la derecha: 31
+secuenciaInstrucciones (67)
+    en la izquierda: 32 33, en la derecha: 33 44 46
+definicionInstruccion (68)
+    en la izquierda: 34 35 36 37, en la derecha: 32 33 39
+secCondiciones (69)
+    en la izquierda: 38 39 40, en la derecha: 31 38 39
+defCondicion (70)
+    en la izquierda: 41 42, en la derecha: 38
+condicionSi (71)
+    en la izquierda: 44, en la derecha: 41 42
+$@3 (72)
+    en la izquierda: 43, en la derecha: 44
+condicionSino (73)
+    en la izquierda: 46, en la derecha: 42
+$@4 (74)
+    en la izquierda: 45, en la derecha: 46
+expresion (75)
+    en la izquierda: 47 48 49 50 51 52 53 54 55 56, en la derecha:
+    13 14 16 24 25 31 34 35 37 50 51 52 53 54 55 56 59 60 61 62 63
+    64
+expresion_bool (76)
+    en la izquierda: 57 58 59 60 61 62 63 64 65 66 67 68 69 70, en la derecha:
+    15 17 44 65 66 67 68 69 70
+
+
+Estado 0
+
+    0 $accept: . programa $end
+
+    $default  reduce usando la regla 4 (siguienteLineaCond)
+
+    programa            ir al estado 1
+    siguienteLineaCond  ir al estado 2
+
+
+Estado 1
+
+    0 $accept: programa . $end
+
+    $end  desplazar e ir al estado 3
+
+
+Estado 2
+
+    1 programa: siguienteLineaCond . bloqueVars bloqueMuebles bloqueHabitaciones
+    5 siguienteLineaCond: siguienteLineaCond . '\n'
+
+    Variables  desplazar e ir al estado 4
+    '\n'       desplazar e ir al estado 5
+
+    $default  reduce usando la regla 6 (bloqueVars)
+
+    bloqueVars  ir al estado 6
+
+
+Estado 3
+
+    0 $accept: programa $end .
+
+    $default  aceptar
+
+
+Estado 4
+
+    7 bloqueVars: Variables . siguienteLin secuenciaVariables
+
+    '\n'  desplazar e ir al estado 7
+
+    siguienteLin  ir al estado 8
+
+
+Estado 5
+
+    5 siguienteLineaCond: siguienteLineaCond '\n' .
+
+    $default  reduce usando la regla 5 (siguienteLineaCond)
+
+
+Estado 6
+
+    1 programa: siguienteLineaCond bloqueVars . bloqueMuebles bloqueHabitaciones
+
+    MUEBLES  desplazar e ir al estado 9
+
+    bloqueMuebles  ir al estado 10
+
+
+Estado 7
+
+    2 siguienteLin: '\n' .
+
+    $default  reduce usando la regla 2 (siguienteLin)
+
+
+Estado 8
+
+    3 siguienteLin: siguienteLin . '\n'
+    7 bloqueVars: Variables siguienteLin . secuenciaVariables
+
+    '\n'  desplazar e ir al estado 11
+
+    $default  reduce usando la regla 8 (secuenciaVariables)
+
+    secuenciaVariables  ir al estado 12
+
+
+Estado 9
+
+   21 bloqueMuebles: MUEBLES . siguienteLin secuenciaMuebles
+
+    '\n'  desplazar e ir al estado 7
+
+    siguienteLin  ir al estado 13
+
+
+Estado 10
+
+    1 programa: siguienteLineaCond bloqueVars bloqueMuebles . bloqueHabitaciones
+
+    INIHABITACION  desplazar e ir al estado 14
+
+    bloqueHabitaciones    ir al estado 15
+    definicionHabitacion  ir al estado 16
+
+
+Estado 11
+
+    3 siguienteLin: siguienteLin '\n' .
+
+    $default  reduce usando la regla 3 (siguienteLin)
+
+
+Estado 12
+
+    7 bloqueVars: Variables siguienteLin secuenciaVariables .
+    9 secuenciaVariables: secuenciaVariables . definicionVars
+
+    error       desplazar e ir al estado 17
+    IDVariable  desplazar e ir al estado 18
+    ENTERO      desplazar e ir al estado 19
+    NUMREAL     desplazar e ir al estado 20
+    LOG         desplazar e ir al estado 21
+
+    MUEBLES  reduce usando la regla 7 (bloqueVars)
+
+    definicionVars  ir al estado 22
+
+
+Estado 13
+
+    3 siguienteLin: siguienteLin . '\n'
+   21 bloqueMuebles: MUEBLES siguienteLin . secuenciaMuebles
+
+    error          desplazar e ir al estado 23
+    VARIABLEMAYUS  desplazar e ir al estado 24
+    '\n'           desplazar e ir al estado 11
+
+    secuenciaMuebles  ir al estado 25
+    definicionMueble  ir al estado 26
+
+
+Estado 14
+
+   31 definicionHabitacion: INIHABITACION . $@1 PARENTIZQ expresion COMA expresion PARENTDER CADENACOMILLAS $@2 DOSPUNTOS siguienteLin secCondiciones FINHABITACION siguienteLin
+
+    $default  reduce usando la regla 29 ($@1)
+
+    $@1  ir al estado 27
+
+
+Estado 15
+
+    1 programa: siguienteLineaCond bloqueVars bloqueMuebles bloqueHabitaciones .
+   28 bloqueHabitaciones: bloqueHabitaciones . definicionHabitacion
+
+    INIHABITACION  desplazar e ir al estado 14
+
+    $default  reduce usando la regla 1 (programa)
+
+    definicionHabitacion  ir al estado 28
+
+
+Estado 16
+
+   27 bloqueHabitaciones: definicionHabitacion .
+
+    $default  reduce usando la regla 27 (bloqueHabitaciones)
+
+
+Estado 17
+
+   18 definicionVars: error . siguienteLin
+
+    '\n'  desplazar e ir al estado 7
+
+    siguienteLin  ir al estado 29
+
+
+Estado 18
+
+   16 definicionVars: IDVariable . ASIGNACION expresion siguienteLin
+   17               | IDVariable . ASIGNACION expresion_bool siguienteLin
+
+    ASIGNACION  desplazar e ir al estado 30
+
+
+Estado 19
+
+   10 definicionVars: ENTERO . secuenciaId siguienteLin
+   13               | ENTERO . IDVariable ASIGNACION expresion siguienteLin
+
+    IDVariable  desplazar e ir al estado 31
+
+    secuenciaId  ir al estado 32
+
+
+Estado 20
+
+   11 definicionVars: NUMREAL . secuenciaId siguienteLin
+   14               | NUMREAL . IDVariable ASIGNACION expresion siguienteLin
+
+    IDVariable  desplazar e ir al estado 33
+
+    secuenciaId  ir al estado 34
+
+
+Estado 21
+
+   12 definicionVars: LOG . secuenciaId siguienteLin
+   15               | LOG . IDVariable ASIGNACION expresion_bool siguienteLin
+
+    IDVariable  desplazar e ir al estado 35
+
+    secuenciaId  ir al estado 36
+
+
+Estado 22
+
+    9 secuenciaVariables: secuenciaVariables definicionVars .
+
+    $default  reduce usando la regla 9 (secuenciaVariables)
+
+
+Estado 23
+
+   26 definicionMueble: error . siguienteLin
+
+    '\n'  desplazar e ir al estado 7
+
+    siguienteLin  ir al estado 37
+
+
+Estado 24
+
+   24 definicionMueble: VARIABLEMAYUS . ASIGNACIONIGUAL MENOR RECTANGULO COMA expresion COMA expresion COMA COLOR MAYOR siguienteLin
+   25                 | VARIABLEMAYUS . ASIGNACIONIGUAL MENOR CIRCULO COMA expresion COMA COLOR MAYOR siguienteLin
+
+    ASIGNACIONIGUAL  desplazar e ir al estado 38
+
+
+Estado 25
+
+   21 bloqueMuebles: MUEBLES siguienteLin secuenciaMuebles .
+   23 secuenciaMuebles: secuenciaMuebles . definicionMueble
+
+    error          desplazar e ir al estado 23
+    VARIABLEMAYUS  desplazar e ir al estado 24
+
+    INIHABITACION  reduce usando la regla 21 (bloqueMuebles)
+
+    definicionMueble  ir al estado 39
+
+
+Estado 26
+
+   22 secuenciaMuebles: definicionMueble .
+
+    $default  reduce usando la regla 22 (secuenciaMuebles)
+
+
+Estado 27
+
+   31 definicionHabitacion: INIHABITACION $@1 . PARENTIZQ expresion COMA expresion PARENTDER CADENACOMILLAS $@2 DOSPUNTOS siguienteLin secCondiciones FINHABITACION siguienteLin
+
+    PARENTIZQ  desplazar e ir al estado 40
+
+
+Estado 28
+
+   28 bloqueHabitaciones: bloqueHabitaciones definicionHabitacion .
+
+    $default  reduce usando la regla 28 (bloqueHabitaciones)
+
+
+Estado 29
+
+    3 siguienteLin: siguienteLin . '\n'
+   18 definicionVars: error siguienteLin .
+
+    '\n'  desplazar e ir al estado 11
+
+    $default  reduce usando la regla 18 (definicionVars)
+
+
+Estado 30
+
+   16 definicionVars: IDVariable ASIGNACION . expresion siguienteLin
+   17               | IDVariable ASIGNACION . expresion_bool siguienteLin
+
+    TRUE        desplazar e ir al estado 41
+    FALSE       desplazar e ir al estado 42
+    NUMERO      desplazar e ir al estado 43
+    REAL        desplazar e ir al estado 44
+    NOT         desplazar e ir al estado 45
+    IDVariable  desplazar e ir al estado 46
+    '-'         desplazar e ir al estado 47
+    '('         desplazar e ir al estado 48
+
+    expresion       ir al estado 49
+    expresion_bool  ir al estado 50
+
+
+Estado 31
+
+   13 definicionVars: ENTERO IDVariable . ASIGNACION expresion siguienteLin
+   19 secuenciaId: IDVariable .
+
+    ASIGNACION  desplazar e ir al estado 51
+
+    $default  reduce usando la regla 19 (secuenciaId)
+
+
+Estado 32
+
+   10 definicionVars: ENTERO secuenciaId . siguienteLin
+   20 secuenciaId: secuenciaId . COMA IDVariable
+
+    COMA  desplazar e ir al estado 52
+    '\n'  desplazar e ir al estado 7
+
+    siguienteLin  ir al estado 53
+
+
+Estado 33
+
+   14 definicionVars: NUMREAL IDVariable . ASIGNACION expresion siguienteLin
+   19 secuenciaId: IDVariable .
+
+    ASIGNACION  desplazar e ir al estado 54
+
+    $default  reduce usando la regla 19 (secuenciaId)
+
+
+Estado 34
+
+   11 definicionVars: NUMREAL secuenciaId . siguienteLin
+   20 secuenciaId: secuenciaId . COMA IDVariable
+
+    COMA  desplazar e ir al estado 52
+    '\n'  desplazar e ir al estado 7
+
+    siguienteLin  ir al estado 55
+
+
+Estado 35
+
+   15 definicionVars: LOG IDVariable . ASIGNACION expresion_bool siguienteLin
+   19 secuenciaId: IDVariable .
+
+    ASIGNACION  desplazar e ir al estado 56
+
+    $default  reduce usando la regla 19 (secuenciaId)
+
+
+Estado 36
+
+   12 definicionVars: LOG secuenciaId . siguienteLin
+   20 secuenciaId: secuenciaId . COMA IDVariable
+
+    COMA  desplazar e ir al estado 52
+    '\n'  desplazar e ir al estado 7
+
+    siguienteLin  ir al estado 57
+
+
+Estado 37
+
+    3 siguienteLin: siguienteLin . '\n'
+   26 definicionMueble: error siguienteLin .
+
+    '\n'  desplazar e ir al estado 11
+
+    $default  reduce usando la regla 26 (definicionMueble)
+
+
+Estado 38
+
+   24 definicionMueble: VARIABLEMAYUS ASIGNACIONIGUAL . MENOR RECTANGULO COMA expresion COMA expresion COMA COLOR MAYOR siguienteLin
+   25                 | VARIABLEMAYUS ASIGNACIONIGUAL . MENOR CIRCULO COMA expresion COMA COLOR MAYOR siguienteLin
+
+    MENOR  desplazar e ir al estado 58
+
+
+Estado 39
+
+   23 secuenciaMuebles: secuenciaMuebles definicionMueble .
+
+    $default  reduce usando la regla 23 (secuenciaMuebles)
+
+
+Estado 40
+
+   31 definicionHabitacion: INIHABITACION $@1 PARENTIZQ . expresion COMA expresion PARENTDER CADENACOMILLAS $@2 DOSPUNTOS siguienteLin secCondiciones FINHABITACION siguienteLin
+
+    NUMERO      desplazar e ir al estado 43
+    REAL        desplazar e ir al estado 44
+    IDVariable  desplazar e ir al estado 46
+    '-'         desplazar e ir al estado 47
+    '('         desplazar e ir al estado 59
+
+    expresion  ir al estado 60
+
+
+Estado 41
+
+   58 expresion_bool: TRUE .
+
+    $default  reduce usando la regla 58 (expresion_bool)
+
+
+Estado 42
+
+   57 expresion_bool: FALSE .
+
+    $default  reduce usando la regla 57 (expresion_bool)
+
+
+Estado 43
+
+   47 expresion: NUMERO .
+
+    $default  reduce usando la regla 47 (expresion)
+
+
+Estado 44
+
+   48 expresion: REAL .
+
+    $default  reduce usando la regla 48 (expresion)
+
+
+Estado 45
+
+   69 expresion_bool: NOT . expresion_bool
+
+    TRUE        desplazar e ir al estado 41
+    FALSE       desplazar e ir al estado 42
+    NUMERO      desplazar e ir al estado 43
+    REAL        desplazar e ir al estado 44
+    NOT         desplazar e ir al estado 45
+    IDVariable  desplazar e ir al estado 46
+    '-'         desplazar e ir al estado 47
+    '('         desplazar e ir al estado 48
+
+    expresion       ir al estado 61
+    expresion_bool  ir al estado 62
+
+
+Estado 46
+
+   49 expresion: IDVariable .
+
+    $default  reduce usando la regla 49 (expresion)
+
+
+Estado 47
+
+   56 expresion: '-' . expresion
+
+    NUMERO      desplazar e ir al estado 43
+    REAL        desplazar e ir al estado 44
+    IDVariable  desplazar e ir al estado 46
+    '-'         desplazar e ir al estado 47
+    '('         desplazar e ir al estado 59
+
+    expresion  ir al estado 63
+
+
+Estado 48
+
+   50 expresion: '(' . expresion ')'
+   70 expresion_bool: '(' . expresion_bool ')'
+
+    TRUE        desplazar e ir al estado 41
+    FALSE       desplazar e ir al estado 42
+    NUMERO      desplazar e ir al estado 43
+    REAL        desplazar e ir al estado 44
+    NOT         desplazar e ir al estado 45
+    IDVariable  desplazar e ir al estado 46
+    '-'         desplazar e ir al estado 47
+    '('         desplazar e ir al estado 48
+
+    expresion       ir al estado 64
+    expresion_bool  ir al estado 65
+
+
+Estado 49
+
+   16 definicionVars: IDVariable ASIGNACION expresion . siguienteLin
+   51 expresion: expresion . '+' expresion
+   52          | expresion . '-' expresion
+   53          | expresion . '*' expresion
+   54          | expresion . '/' expresion
+   55          | expresion . '%' expresion
+   59 expresion_bool: expresion . MAYOR expresion
+   60               | expresion . MENOR expresion
+   61               | expresion . MAYOR_IGUAL expresion
+   62               | expresion . MENOR_IGUAL expresion
+   63               | expresion . IGUAL expresion
+   64               | expresion . DISTINTO expresion
+
+    MAYOR        desplazar e ir al estado 66
+    MAYOR_IGUAL  desplazar e ir al estado 67
+    MENOR        desplazar e ir al estado 68
+    MENOR_IGUAL  desplazar e ir al estado 69
+    IGUAL        desplazar e ir al estado 70
+    DISTINTO     desplazar e ir al estado 71
+    '+'          desplazar e ir al estado 72
+    '-'          desplazar e ir al estado 73
+    '*'          desplazar e ir al estado 74
+    '/'          desplazar e ir al estado 75
+    '%'          desplazar e ir al estado 76
+    '\n'         desplazar e ir al estado 7
+
+    siguienteLin  ir al estado 77
+
+
+Estado 50
+
+   17 definicionVars: IDVariable ASIGNACION expresion_bool . siguienteLin
+   65 expresion_bool: expresion_bool . IGUAL expresion_bool
+   66               | expresion_bool . DISTINTO expresion_bool
+   67               | expresion_bool . OR expresion_bool
+   68               | expresion_bool . AND expresion_bool
+
+    AND       desplazar e ir al estado 78
+    OR        desplazar e ir al estado 79
+    IGUAL     desplazar e ir al estado 80
+    DISTINTO  desplazar e ir al estado 81
+    '\n'      desplazar e ir al estado 7
+
+    siguienteLin  ir al estado 82
+
+
+Estado 51
+
+   13 definicionVars: ENTERO IDVariable ASIGNACION . expresion siguienteLin
+
+    NUMERO      desplazar e ir al estado 43
+    REAL        desplazar e ir al estado 44
+    IDVariable  desplazar e ir al estado 46
+    '-'         desplazar e ir al estado 47
+    '('         desplazar e ir al estado 59
+
+    expresion  ir al estado 83
+
+
+Estado 52
+
+   20 secuenciaId: secuenciaId COMA . IDVariable
+
+    IDVariable  desplazar e ir al estado 84
+
+
+Estado 53
+
+    3 siguienteLin: siguienteLin . '\n'
+   10 definicionVars: ENTERO secuenciaId siguienteLin .
+
+    '\n'  desplazar e ir al estado 11
+
+    $default  reduce usando la regla 10 (definicionVars)
+
+
+Estado 54
+
+   14 definicionVars: NUMREAL IDVariable ASIGNACION . expresion siguienteLin
+
+    NUMERO      desplazar e ir al estado 43
+    REAL        desplazar e ir al estado 44
+    IDVariable  desplazar e ir al estado 46
+    '-'         desplazar e ir al estado 47
+    '('         desplazar e ir al estado 59
+
+    expresion  ir al estado 85
+
+
+Estado 55
+
+    3 siguienteLin: siguienteLin . '\n'
+   11 definicionVars: NUMREAL secuenciaId siguienteLin .
+
+    '\n'  desplazar e ir al estado 11
+
+    $default  reduce usando la regla 11 (definicionVars)
+
+
+Estado 56
+
+   15 definicionVars: LOG IDVariable ASIGNACION . expresion_bool siguienteLin
+
+    TRUE        desplazar e ir al estado 41
+    FALSE       desplazar e ir al estado 42
+    NUMERO      desplazar e ir al estado 43
+    REAL        desplazar e ir al estado 44
+    NOT         desplazar e ir al estado 45
+    IDVariable  desplazar e ir al estado 46
+    '-'         desplazar e ir al estado 47
+    '('         desplazar e ir al estado 48
+
+    expresion       ir al estado 61
+    expresion_bool  ir al estado 86
+
+
+Estado 57
+
+    3 siguienteLin: siguienteLin . '\n'
+   12 definicionVars: LOG secuenciaId siguienteLin .
+
+    '\n'  desplazar e ir al estado 11
+
+    $default  reduce usando la regla 12 (definicionVars)
+
+
+Estado 58
+
+   24 definicionMueble: VARIABLEMAYUS ASIGNACIONIGUAL MENOR . RECTANGULO COMA expresion COMA expresion COMA COLOR MAYOR siguienteLin
+   25                 | VARIABLEMAYUS ASIGNACIONIGUAL MENOR . CIRCULO COMA expresion COMA COLOR MAYOR siguienteLin
+
+    RECTANGULO  desplazar e ir al estado 87
+    CIRCULO     desplazar e ir al estado 88
+
+
+Estado 59
+
+   50 expresion: '(' . expresion ')'
+
+    NUMERO      desplazar e ir al estado 43
+    REAL        desplazar e ir al estado 44
+    IDVariable  desplazar e ir al estado 46
+    '-'         desplazar e ir al estado 47
+    '('         desplazar e ir al estado 59
+
+    expresion  ir al estado 89
+
+
+Estado 60
+
+   31 definicionHabitacion: INIHABITACION $@1 PARENTIZQ expresion . COMA expresion PARENTDER CADENACOMILLAS $@2 DOSPUNTOS siguienteLin secCondiciones FINHABITACION siguienteLin
+   51 expresion: expresion . '+' expresion
+   52          | expresion . '-' expresion
+   53          | expresion . '*' expresion
+   54          | expresion . '/' expresion
+   55          | expresion . '%' expresion
+
+    COMA  desplazar e ir al estado 90
+    '+'   desplazar e ir al estado 72
+    '-'   desplazar e ir al estado 73
+    '*'   desplazar e ir al estado 74
+    '/'   desplazar e ir al estado 75
+    '%'   desplazar e ir al estado 76
+
+
+Estado 61
+
+   51 expresion: expresion . '+' expresion
+   52          | expresion . '-' expresion
+   53          | expresion . '*' expresion
+   54          | expresion . '/' expresion
+   55          | expresion . '%' expresion
+   59 expresion_bool: expresion . MAYOR expresion
+   60               | expresion . MENOR expresion
+   61               | expresion . MAYOR_IGUAL expresion
+   62               | expresion . MENOR_IGUAL expresion
+   63               | expresion . IGUAL expresion
+   64               | expresion . DISTINTO expresion
+
+    MAYOR        desplazar e ir al estado 66
+    MAYOR_IGUAL  desplazar e ir al estado 67
+    MENOR        desplazar e ir al estado 68
+    MENOR_IGUAL  desplazar e ir al estado 69
+    IGUAL        desplazar e ir al estado 70
+    DISTINTO     desplazar e ir al estado 71
+    '+'          desplazar e ir al estado 72
+    '-'          desplazar e ir al estado 73
+    '*'          desplazar e ir al estado 74
+    '/'          desplazar e ir al estado 75
+    '%'          desplazar e ir al estado 76
+
+
+Estado 62
+
+   65 expresion_bool: expresion_bool . IGUAL expresion_bool
+   66               | expresion_bool . DISTINTO expresion_bool
+   67               | expresion_bool . OR expresion_bool
+   68               | expresion_bool . AND expresion_bool
+   69               | NOT expresion_bool .
+
+    $default  reduce usando la regla 69 (expresion_bool)
+
+
+Estado 63
+
+   51 expresion: expresion . '+' expresion
+   52          | expresion . '-' expresion
+   53          | expresion . '*' expresion
+   54          | expresion . '/' expresion
+   55          | expresion . '%' expresion
+   56          | '-' expresion .
+
+    $default  reduce usando la regla 56 (expresion)
+
+
+Estado 64
+
+   50 expresion: '(' expresion . ')'
+   51          | expresion . '+' expresion
+   52          | expresion . '-' expresion
+   53          | expresion . '*' expresion
+   54          | expresion . '/' expresion
+   55          | expresion . '%' expresion
+   59 expresion_bool: expresion . MAYOR expresion
+   60               | expresion . MENOR expresion
+   61               | expresion . MAYOR_IGUAL expresion
+   62               | expresion . MENOR_IGUAL expresion
+   63               | expresion . IGUAL expresion
+   64               | expresion . DISTINTO expresion
+
+    MAYOR        desplazar e ir al estado 66
+    MAYOR_IGUAL  desplazar e ir al estado 67
+    MENOR        desplazar e ir al estado 68
+    MENOR_IGUAL  desplazar e ir al estado 69
+    IGUAL        desplazar e ir al estado 70
+    DISTINTO     desplazar e ir al estado 71
+    '+'          desplazar e ir al estado 72
+    '-'          desplazar e ir al estado 73
+    '*'          desplazar e ir al estado 74
+    '/'          desplazar e ir al estado 75
+    '%'          desplazar e ir al estado 76
+    ')'          desplazar e ir al estado 91
+
+
+Estado 65
+
+   65 expresion_bool: expresion_bool . IGUAL expresion_bool
+   66               | expresion_bool . DISTINTO expresion_bool
+   67               | expresion_bool . OR expresion_bool
+   68               | expresion_bool . AND expresion_bool
+   70               | '(' expresion_bool . ')'
+
+    AND       desplazar e ir al estado 78
+    OR        desplazar e ir al estado 79
+    IGUAL     desplazar e ir al estado 80
+    DISTINTO  desplazar e ir al estado 81
+    ')'       desplazar e ir al estado 92
+
+
+Estado 66
+
+   59 expresion_bool: expresion MAYOR . expresion
+
+    NUMERO      desplazar e ir al estado 43
+    REAL        desplazar e ir al estado 44
+    IDVariable  desplazar e ir al estado 46
+    '-'         desplazar e ir al estado 47
+    '('         desplazar e ir al estado 59
+
+    expresion  ir al estado 93
+
+
+Estado 67
+
+   61 expresion_bool: expresion MAYOR_IGUAL . expresion
+
+    NUMERO      desplazar e ir al estado 43
+    REAL        desplazar e ir al estado 44
+    IDVariable  desplazar e ir al estado 46
+    '-'         desplazar e ir al estado 47
+    '('         desplazar e ir al estado 59
+
+    expresion  ir al estado 94
+
+
+Estado 68
+
+   60 expresion_bool: expresion MENOR . expresion
+
+    NUMERO      desplazar e ir al estado 43
+    REAL        desplazar e ir al estado 44
+    IDVariable  desplazar e ir al estado 46
+    '-'         desplazar e ir al estado 47
+    '('         desplazar e ir al estado 59
+
+    expresion  ir al estado 95
+
+
+Estado 69
+
+   62 expresion_bool: expresion MENOR_IGUAL . expresion
+
+    NUMERO      desplazar e ir al estado 43
+    REAL        desplazar e ir al estado 44
+    IDVariable  desplazar e ir al estado 46
+    '-'         desplazar e ir al estado 47
+    '('         desplazar e ir al estado 59
+
+    expresion  ir al estado 96
+
+
+Estado 70
+
+   63 expresion_bool: expresion IGUAL . expresion
+
+    NUMERO      desplazar e ir al estado 43
+    REAL        desplazar e ir al estado 44
+    IDVariable  desplazar e ir al estado 46
+    '-'         desplazar e ir al estado 47
+    '('         desplazar e ir al estado 59
+
+    expresion  ir al estado 97
+
+
+Estado 71
+
+   64 expresion_bool: expresion DISTINTO . expresion
+
+    NUMERO      desplazar e ir al estado 43
+    REAL        desplazar e ir al estado 44
+    IDVariable  desplazar e ir al estado 46
+    '-'         desplazar e ir al estado 47
+    '('         desplazar e ir al estado 59
+
+    expresion  ir al estado 98
+
+
+Estado 72
+
+   51 expresion: expresion '+' . expresion
+
+    NUMERO      desplazar e ir al estado 43
+    REAL        desplazar e ir al estado 44
+    IDVariable  desplazar e ir al estado 46
+    '-'         desplazar e ir al estado 47
+    '('         desplazar e ir al estado 59
+
+    expresion  ir al estado 99
+
+
+Estado 73
+
+   52 expresion: expresion '-' . expresion
+
+    NUMERO      desplazar e ir al estado 43
+    REAL        desplazar e ir al estado 44
+    IDVariable  desplazar e ir al estado 46
+    '-'         desplazar e ir al estado 47
+    '('         desplazar e ir al estado 59
+
+    expresion  ir al estado 100
+
+
+Estado 74
+
+   53 expresion: expresion '*' . expresion
+
+    NUMERO      desplazar e ir al estado 43
+    REAL        desplazar e ir al estado 44
+    IDVariable  desplazar e ir al estado 46
+    '-'         desplazar e ir al estado 47
+    '('         desplazar e ir al estado 59
+
+    expresion  ir al estado 101
+
+
+Estado 75
+
+   54 expresion: expresion '/' . expresion
+
+    NUMERO      desplazar e ir al estado 43
+    REAL        desplazar e ir al estado 44
+    IDVariable  desplazar e ir al estado 46
+    '-'         desplazar e ir al estado 47
+    '('         desplazar e ir al estado 59
+
+    expresion  ir al estado 102
+
+
+Estado 76
+
+   55 expresion: expresion '%' . expresion
+
+    NUMERO      desplazar e ir al estado 43
+    REAL        desplazar e ir al estado 44
+    IDVariable  desplazar e ir al estado 46
+    '-'         desplazar e ir al estado 47
+    '('         desplazar e ir al estado 59
+
+    expresion  ir al estado 103
+
+
+Estado 77
+
+    3 siguienteLin: siguienteLin . '\n'
+   16 definicionVars: IDVariable ASIGNACION expresion siguienteLin .
+
+    '\n'  desplazar e ir al estado 11
+
+    $default  reduce usando la regla 16 (definicionVars)
+
+
+Estado 78
+
+   68 expresion_bool: expresion_bool AND . expresion_bool
+
+    TRUE        desplazar e ir al estado 41
+    FALSE       desplazar e ir al estado 42
+    NUMERO      desplazar e ir al estado 43
+    REAL        desplazar e ir al estado 44
+    NOT         desplazar e ir al estado 45
+    IDVariable  desplazar e ir al estado 46
+    '-'         desplazar e ir al estado 47
+    '('         desplazar e ir al estado 48
+
+    expresion       ir al estado 61
+    expresion_bool  ir al estado 104
+
+
+Estado 79
+
+   67 expresion_bool: expresion_bool OR . expresion_bool
+
+    TRUE        desplazar e ir al estado 41
+    FALSE       desplazar e ir al estado 42
+    NUMERO      desplazar e ir al estado 43
+    REAL        desplazar e ir al estado 44
+    NOT         desplazar e ir al estado 45
+    IDVariable  desplazar e ir al estado 46
+    '-'         desplazar e ir al estado 47
+    '('         desplazar e ir al estado 48
+
+    expresion       ir al estado 61
+    expresion_bool  ir al estado 105
+
+
+Estado 80
+
+   65 expresion_bool: expresion_bool IGUAL . expresion_bool
+
+    TRUE        desplazar e ir al estado 41
+    FALSE       desplazar e ir al estado 42
+    NUMERO      desplazar e ir al estado 43
+    REAL        desplazar e ir al estado 44
+    NOT         desplazar e ir al estado 45
+    IDVariable  desplazar e ir al estado 46
+    '-'         desplazar e ir al estado 47
+    '('         desplazar e ir al estado 48
+
+    expresion       ir al estado 61
+    expresion_bool  ir al estado 106
+
+
+Estado 81
+
+   66 expresion_bool: expresion_bool DISTINTO . expresion_bool
+
+    TRUE        desplazar e ir al estado 41
+    FALSE       desplazar e ir al estado 42
+    NUMERO      desplazar e ir al estado 43
+    REAL        desplazar e ir al estado 44
+    NOT         desplazar e ir al estado 45
+    IDVariable  desplazar e ir al estado 46
+    '-'         desplazar e ir al estado 47
+    '('         desplazar e ir al estado 48
+
+    expresion       ir al estado 61
+    expresion_bool  ir al estado 107
+
+
+Estado 82
+
+    3 siguienteLin: siguienteLin . '\n'
+   17 definicionVars: IDVariable ASIGNACION expresion_bool siguienteLin .
+
+    '\n'  desplazar e ir al estado 11
+
+    $default  reduce usando la regla 17 (definicionVars)
+
+
+Estado 83
+
+   13 definicionVars: ENTERO IDVariable ASIGNACION expresion . siguienteLin
+   51 expresion: expresion . '+' expresion
+   52          | expresion . '-' expresion
+   53          | expresion . '*' expresion
+   54          | expresion . '/' expresion
+   55          | expresion . '%' expresion
+
+    '+'   desplazar e ir al estado 72
+    '-'   desplazar e ir al estado 73
+    '*'   desplazar e ir al estado 74
+    '/'   desplazar e ir al estado 75
+    '%'   desplazar e ir al estado 76
+    '\n'  desplazar e ir al estado 7
+
+    siguienteLin  ir al estado 108
+
+
+Estado 84
+
+   20 secuenciaId: secuenciaId COMA IDVariable .
+
+    $default  reduce usando la regla 20 (secuenciaId)
+
+
+Estado 85
+
+   14 definicionVars: NUMREAL IDVariable ASIGNACION expresion . siguienteLin
+   51 expresion: expresion . '+' expresion
+   52          | expresion . '-' expresion
+   53          | expresion . '*' expresion
+   54          | expresion . '/' expresion
+   55          | expresion . '%' expresion
+
+    '+'   desplazar e ir al estado 72
+    '-'   desplazar e ir al estado 73
+    '*'   desplazar e ir al estado 74
+    '/'   desplazar e ir al estado 75
+    '%'   desplazar e ir al estado 76
+    '\n'  desplazar e ir al estado 7
+
+    siguienteLin  ir al estado 109
+
+
+Estado 86
+
+   15 definicionVars: LOG IDVariable ASIGNACION expresion_bool . siguienteLin
+   65 expresion_bool: expresion_bool . IGUAL expresion_bool
+   66               | expresion_bool . DISTINTO expresion_bool
+   67               | expresion_bool . OR expresion_bool
+   68               | expresion_bool . AND expresion_bool
+
+    AND       desplazar e ir al estado 78
+    OR        desplazar e ir al estado 79
+    IGUAL     desplazar e ir al estado 80
+    DISTINTO  desplazar e ir al estado 81
+    '\n'      desplazar e ir al estado 7
+
+    siguienteLin  ir al estado 110
+
+
+Estado 87
+
+   24 definicionMueble: VARIABLEMAYUS ASIGNACIONIGUAL MENOR RECTANGULO . COMA expresion COMA expresion COMA COLOR MAYOR siguienteLin
+
+    COMA  desplazar e ir al estado 111
+
+
+Estado 88
+
+   25 definicionMueble: VARIABLEMAYUS ASIGNACIONIGUAL MENOR CIRCULO . COMA expresion COMA COLOR MAYOR siguienteLin
+
+    COMA  desplazar e ir al estado 112
+
+
+Estado 89
+
+   50 expresion: '(' expresion . ')'
+   51          | expresion . '+' expresion
+   52          | expresion . '-' expresion
+   53          | expresion . '*' expresion
+   54          | expresion . '/' expresion
+   55          | expresion . '%' expresion
+
+    '+'  desplazar e ir al estado 72
+    '-'  desplazar e ir al estado 73
+    '*'  desplazar e ir al estado 74
+    '/'  desplazar e ir al estado 75
+    '%'  desplazar e ir al estado 76
+    ')'  desplazar e ir al estado 91
+
+
+Estado 90
+
+   31 definicionHabitacion: INIHABITACION $@1 PARENTIZQ expresion COMA . expresion PARENTDER CADENACOMILLAS $@2 DOSPUNTOS siguienteLin secCondiciones FINHABITACION siguienteLin
+
+    NUMERO      desplazar e ir al estado 43
+    REAL        desplazar e ir al estado 44
+    IDVariable  desplazar e ir al estado 46
+    '-'         desplazar e ir al estado 47
+    '('         desplazar e ir al estado 59
+
+    expresion  ir al estado 113
+
+
+Estado 91
+
+   50 expresion: '(' expresion ')' .
+
+    $default  reduce usando la regla 50 (expresion)
+
+
+Estado 92
+
+   70 expresion_bool: '(' expresion_bool ')' .
+
+    $default  reduce usando la regla 70 (expresion_bool)
+
+
+Estado 93
+
+   51 expresion: expresion . '+' expresion
+   52          | expresion . '-' expresion
+   53          | expresion . '*' expresion
+   54          | expresion . '/' expresion
+   55          | expresion . '%' expresion
+   59 expresion_bool: expresion MAYOR expresion .
+
+    '+'  desplazar e ir al estado 72
+    '-'  desplazar e ir al estado 73
+    '*'  desplazar e ir al estado 74
+    '/'  desplazar e ir al estado 75
+    '%'  desplazar e ir al estado 76
+
+    $default  reduce usando la regla 59 (expresion_bool)
+
+
+Estado 94
+
+   51 expresion: expresion . '+' expresion
+   52          | expresion . '-' expresion
+   53          | expresion . '*' expresion
+   54          | expresion . '/' expresion
+   55          | expresion . '%' expresion
+   61 expresion_bool: expresion MAYOR_IGUAL expresion .
+
+    '+'  desplazar e ir al estado 72
+    '-'  desplazar e ir al estado 73
+    '*'  desplazar e ir al estado 74
+    '/'  desplazar e ir al estado 75
+    '%'  desplazar e ir al estado 76
+
+    $default  reduce usando la regla 61 (expresion_bool)
+
+
+Estado 95
+
+   51 expresion: expresion . '+' expresion
+   52          | expresion . '-' expresion
+   53          | expresion . '*' expresion
+   54          | expresion . '/' expresion
+   55          | expresion . '%' expresion
+   60 expresion_bool: expresion MENOR expresion .
+
+    '+'  desplazar e ir al estado 72
+    '-'  desplazar e ir al estado 73
+    '*'  desplazar e ir al estado 74
+    '/'  desplazar e ir al estado 75
+    '%'  desplazar e ir al estado 76
+
+    $default  reduce usando la regla 60 (expresion_bool)
+
+
+Estado 96
+
+   51 expresion: expresion . '+' expresion
+   52          | expresion . '-' expresion
+   53          | expresion . '*' expresion
+   54          | expresion . '/' expresion
+   55          | expresion . '%' expresion
+   62 expresion_bool: expresion MENOR_IGUAL expresion .
+
+    '+'  desplazar e ir al estado 72
+    '-'  desplazar e ir al estado 73
+    '*'  desplazar e ir al estado 74
+    '/'  desplazar e ir al estado 75
+    '%'  desplazar e ir al estado 76
+
+    $default  reduce usando la regla 62 (expresion_bool)
+
+
+Estado 97
+
+   51 expresion: expresion . '+' expresion
+   52          | expresion . '-' expresion
+   53          | expresion . '*' expresion
+   54          | expresion . '/' expresion
+   55          | expresion . '%' expresion
+   63 expresion_bool: expresion IGUAL expresion .
+
+    '+'  desplazar e ir al estado 72
+    '-'  desplazar e ir al estado 73
+    '*'  desplazar e ir al estado 74
+    '/'  desplazar e ir al estado 75
+    '%'  desplazar e ir al estado 76
+
+    $default  reduce usando la regla 63 (expresion_bool)
+
+
+Estado 98
+
+   51 expresion: expresion . '+' expresion
+   52          | expresion . '-' expresion
+   53          | expresion . '*' expresion
+   54          | expresion . '/' expresion
+   55          | expresion . '%' expresion
+   64 expresion_bool: expresion DISTINTO expresion .
+
+    '+'  desplazar e ir al estado 72
+    '-'  desplazar e ir al estado 73
+    '*'  desplazar e ir al estado 74
+    '/'  desplazar e ir al estado 75
+    '%'  desplazar e ir al estado 76
+
+    $default  reduce usando la regla 64 (expresion_bool)
+
+
+Estado 99
+
+   51 expresion: expresion . '+' expresion
+   51          | expresion '+' expresion .
+   52          | expresion . '-' expresion
+   53          | expresion . '*' expresion
+   54          | expresion . '/' expresion
+   55          | expresion . '%' expresion
+
+    '*'  desplazar e ir al estado 74
+    '/'  desplazar e ir al estado 75
+    '%'  desplazar e ir al estado 76
+
+    $default  reduce usando la regla 51 (expresion)
+
+
+Estado 100
+
+   51 expresion: expresion . '+' expresion
+   52          | expresion . '-' expresion
+   52          | expresion '-' expresion .
+   53          | expresion . '*' expresion
+   54          | expresion . '/' expresion
+   55          | expresion . '%' expresion
+
+    '*'  desplazar e ir al estado 74
+    '/'  desplazar e ir al estado 75
+    '%'  desplazar e ir al estado 76
+
+    $default  reduce usando la regla 52 (expresion)
+
+
+Estado 101
+
+   51 expresion: expresion . '+' expresion
+   52          | expresion . '-' expresion
+   53          | expresion . '*' expresion
+   53          | expresion '*' expresion .
+   54          | expresion . '/' expresion
+   55          | expresion . '%' expresion
+
+    $default  reduce usando la regla 53 (expresion)
+
+
+Estado 102
+
+   51 expresion: expresion . '+' expresion
+   52          | expresion . '-' expresion
+   53          | expresion . '*' expresion
+   54          | expresion . '/' expresion
+   54          | expresion '/' expresion .
+   55          | expresion . '%' expresion
+
+    $default  reduce usando la regla 54 (expresion)
+
+
+Estado 103
+
+   51 expresion: expresion . '+' expresion
+   52          | expresion . '-' expresion
+   53          | expresion . '*' expresion
+   54          | expresion . '/' expresion
+   55          | expresion . '%' expresion
+   55          | expresion '%' expresion .
+
+    $default  reduce usando la regla 55 (expresion)
+
+
+Estado 104
+
+   65 expresion_bool: expresion_bool . IGUAL expresion_bool
+   66               | expresion_bool . DISTINTO expresion_bool
+   67               | expresion_bool . OR expresion_bool
+   68               | expresion_bool . AND expresion_bool
+   68               | expresion_bool AND expresion_bool .
+
+    IGUAL     desplazar e ir al estado 80
+    DISTINTO  desplazar e ir al estado 81
+
+    $default  reduce usando la regla 68 (expresion_bool)
+
+
+Estado 105
+
+   65 expresion_bool: expresion_bool . IGUAL expresion_bool
+   66               | expresion_bool . DISTINTO expresion_bool
+   67               | expresion_bool . OR expresion_bool
+   67               | expresion_bool OR expresion_bool .
+   68               | expresion_bool . AND expresion_bool
+
+    AND       desplazar e ir al estado 78
+    IGUAL     desplazar e ir al estado 80
+    DISTINTO  desplazar e ir al estado 81
+
+    $default  reduce usando la regla 67 (expresion_bool)
+
+
+Estado 106
+
+   65 expresion_bool: expresion_bool . IGUAL expresion_bool
+   65               | expresion_bool IGUAL expresion_bool .
+   66               | expresion_bool . DISTINTO expresion_bool
+   67               | expresion_bool . OR expresion_bool
+   68               | expresion_bool . AND expresion_bool
+
+    $default  reduce usando la regla 65 (expresion_bool)
+
+
+Estado 107
+
+   65 expresion_bool: expresion_bool . IGUAL expresion_bool
+   66               | expresion_bool . DISTINTO expresion_bool
+   66               | expresion_bool DISTINTO expresion_bool .
+   67               | expresion_bool . OR expresion_bool
+   68               | expresion_bool . AND expresion_bool
+
+    $default  reduce usando la regla 66 (expresion_bool)
+
+
+Estado 108
+
+    3 siguienteLin: siguienteLin . '\n'
+   13 definicionVars: ENTERO IDVariable ASIGNACION expresion siguienteLin .
+
+    '\n'  desplazar e ir al estado 11
+
+    $default  reduce usando la regla 13 (definicionVars)
+
+
+Estado 109
+
+    3 siguienteLin: siguienteLin . '\n'
+   14 definicionVars: NUMREAL IDVariable ASIGNACION expresion siguienteLin .
+
+    '\n'  desplazar e ir al estado 11
+
+    $default  reduce usando la regla 14 (definicionVars)
+
+
+Estado 110
+
+    3 siguienteLin: siguienteLin . '\n'
+   15 definicionVars: LOG IDVariable ASIGNACION expresion_bool siguienteLin .
+
+    '\n'  desplazar e ir al estado 11
+
+    $default  reduce usando la regla 15 (definicionVars)
+
+
+Estado 111
+
+   24 definicionMueble: VARIABLEMAYUS ASIGNACIONIGUAL MENOR RECTANGULO COMA . expresion COMA expresion COMA COLOR MAYOR siguienteLin
+
+    NUMERO      desplazar e ir al estado 43
+    REAL        desplazar e ir al estado 44
+    IDVariable  desplazar e ir al estado 46
+    '-'         desplazar e ir al estado 47
+    '('         desplazar e ir al estado 59
+
+    expresion  ir al estado 114
+
+
+Estado 112
+
+   25 definicionMueble: VARIABLEMAYUS ASIGNACIONIGUAL MENOR CIRCULO COMA . expresion COMA COLOR MAYOR siguienteLin
+
+    NUMERO      desplazar e ir al estado 43
+    REAL        desplazar e ir al estado 44
+    IDVariable  desplazar e ir al estado 46
+    '-'         desplazar e ir al estado 47
+    '('         desplazar e ir al estado 59
+
+    expresion  ir al estado 115
+
+
+Estado 113
+
+   31 definicionHabitacion: INIHABITACION $@1 PARENTIZQ expresion COMA expresion . PARENTDER CADENACOMILLAS $@2 DOSPUNTOS siguienteLin secCondiciones FINHABITACION siguienteLin
+   51 expresion: expresion . '+' expresion
+   52          | expresion . '-' expresion
+   53          | expresion . '*' expresion
+   54          | expresion . '/' expresion
+   55          | expresion . '%' expresion
+
+    PARENTDER  desplazar e ir al estado 116
+    '+'        desplazar e ir al estado 72
+    '-'        desplazar e ir al estado 73
+    '*'        desplazar e ir al estado 74
+    '/'        desplazar e ir al estado 75
+    '%'        desplazar e ir al estado 76
+
+
+Estado 114
+
+   24 definicionMueble: VARIABLEMAYUS ASIGNACIONIGUAL MENOR RECTANGULO COMA expresion . COMA expresion COMA COLOR MAYOR siguienteLin
+   51 expresion: expresion . '+' expresion
+   52          | expresion . '-' expresion
+   53          | expresion . '*' expresion
+   54          | expresion . '/' expresion
+   55          | expresion . '%' expresion
+
+    COMA  desplazar e ir al estado 117
+    '+'   desplazar e ir al estado 72
+    '-'   desplazar e ir al estado 73
+    '*'   desplazar e ir al estado 74
+    '/'   desplazar e ir al estado 75
+    '%'   desplazar e ir al estado 76
+
+
+Estado 115
+
+   25 definicionMueble: VARIABLEMAYUS ASIGNACIONIGUAL MENOR CIRCULO COMA expresion . COMA COLOR MAYOR siguienteLin
+   51 expresion: expresion . '+' expresion
+   52          | expresion . '-' expresion
+   53          | expresion . '*' expresion
+   54          | expresion . '/' expresion
+   55          | expresion . '%' expresion
+
+    COMA  desplazar e ir al estado 118
+    '+'   desplazar e ir al estado 72
+    '-'   desplazar e ir al estado 73
+    '*'   desplazar e ir al estado 74
+    '/'   desplazar e ir al estado 75
+    '%'   desplazar e ir al estado 76
+
+
+Estado 116
+
+   31 definicionHabitacion: INIHABITACION $@1 PARENTIZQ expresion COMA expresion PARENTDER . CADENACOMILLAS $@2 DOSPUNTOS siguienteLin secCondiciones FINHABITACION siguienteLin
+
+    CADENACOMILLAS  desplazar e ir al estado 119
+
+
+Estado 117
+
+   24 definicionMueble: VARIABLEMAYUS ASIGNACIONIGUAL MENOR RECTANGULO COMA expresion COMA . expresion COMA COLOR MAYOR siguienteLin
+
+    NUMERO      desplazar e ir al estado 43
+    REAL        desplazar e ir al estado 44
+    IDVariable  desplazar e ir al estado 46
+    '-'         desplazar e ir al estado 47
+    '('         desplazar e ir al estado 59
+
+    expresion  ir al estado 120
+
+
+Estado 118
+
+   25 definicionMueble: VARIABLEMAYUS ASIGNACIONIGUAL MENOR CIRCULO COMA expresion COMA . COLOR MAYOR siguienteLin
+
+    COLOR  desplazar e ir al estado 121
+
+
+Estado 119
+
+   31 definicionHabitacion: INIHABITACION $@1 PARENTIZQ expresion COMA expresion PARENTDER CADENACOMILLAS . $@2 DOSPUNTOS siguienteLin secCondiciones FINHABITACION siguienteLin
+
+    $default  reduce usando la regla 30 ($@2)
+
+    $@2  ir al estado 122
+
+
+Estado 120
+
+   24 definicionMueble: VARIABLEMAYUS ASIGNACIONIGUAL MENOR RECTANGULO COMA expresion COMA expresion . COMA COLOR MAYOR siguienteLin
+   51 expresion: expresion . '+' expresion
+   52          | expresion . '-' expresion
+   53          | expresion . '*' expresion
+   54          | expresion . '/' expresion
+   55          | expresion . '%' expresion
+
+    COMA  desplazar e ir al estado 123
+    '+'   desplazar e ir al estado 72
+    '-'   desplazar e ir al estado 73
+    '*'   desplazar e ir al estado 74
+    '/'   desplazar e ir al estado 75
+    '%'   desplazar e ir al estado 76
+
+
+Estado 121
+
+   25 definicionMueble: VARIABLEMAYUS ASIGNACIONIGUAL MENOR CIRCULO COMA expresion COMA COLOR . MAYOR siguienteLin
+
+    MAYOR  desplazar e ir al estado 124
+
+
+Estado 122
+
+   31 definicionHabitacion: INIHABITACION $@1 PARENTIZQ expresion COMA expresion PARENTDER CADENACOMILLAS $@2 . DOSPUNTOS siguienteLin secCondiciones FINHABITACION siguienteLin
+
+    DOSPUNTOS  desplazar e ir al estado 125
+
+
+Estado 123
+
+   24 definicionMueble: VARIABLEMAYUS ASIGNACIONIGUAL MENOR RECTANGULO COMA expresion COMA expresion COMA . COLOR MAYOR siguienteLin
+
+    COLOR  desplazar e ir al estado 126
+
+
+Estado 124
+
+   25 definicionMueble: VARIABLEMAYUS ASIGNACIONIGUAL MENOR CIRCULO COMA expresion COMA COLOR MAYOR . siguienteLin
+
+    '\n'  desplazar e ir al estado 7
+
+    siguienteLin  ir al estado 127
+
+
+Estado 125
+
+   31 definicionHabitacion: INIHABITACION $@1 PARENTIZQ expresion COMA expresion PARENTDER CADENACOMILLAS $@2 DOSPUNTOS . siguienteLin secCondiciones FINHABITACION siguienteLin
+
+    '\n'  desplazar e ir al estado 7
+
+    siguienteLin  ir al estado 128
+
+
+Estado 126
+
+   24 definicionMueble: VARIABLEMAYUS ASIGNACIONIGUAL MENOR RECTANGULO COMA expresion COMA expresion COMA COLOR . MAYOR siguienteLin
+
+    MAYOR  desplazar e ir al estado 129
+
+
+Estado 127
+
+    3 siguienteLin: siguienteLin . '\n'
+   25 definicionMueble: VARIABLEMAYUS ASIGNACIONIGUAL MENOR CIRCULO COMA expresion COMA COLOR MAYOR siguienteLin .
+
+    '\n'  desplazar e ir al estado 11
+
+    $default  reduce usando la regla 25 (definicionMueble)
+
+
+Estado 128
+
+    3 siguienteLin: siguienteLin . '\n'
+   31 definicionHabitacion: INIHABITACION $@1 PARENTIZQ expresion COMA expresion PARENTDER CADENACOMILLAS $@2 DOSPUNTOS siguienteLin . secCondiciones FINHABITACION siguienteLin
+
+    IDVariable  desplazar e ir al estado 130
+    PAUSA       desplazar e ir al estado 131
+    MENSAJE     desplazar e ir al estado 132
+    SITUAR      desplazar e ir al estado 133
+    SI          desplazar e ir al estado 134
+    '\n'        desplazar e ir al estado 11
+
+    $default  reduce usando la regla 40 (secCondiciones)
+
+    definicionInstruccion  ir al estado 135
+    secCondiciones         ir al estado 136
+    defCondicion           ir al estado 137
+    condicionSi            ir al estado 138
+
+
+Estado 129
+
+   24 definicionMueble: VARIABLEMAYUS ASIGNACIONIGUAL MENOR RECTANGULO COMA expresion COMA expresion COMA COLOR MAYOR . siguienteLin
+
+    '\n'  desplazar e ir al estado 7
+
+    siguienteLin  ir al estado 139
+
+
+Estado 130
+
+   37 definicionInstruccion: IDVariable . ASIGNACION expresion siguienteLin
+
+    ASIGNACION  desplazar e ir al estado 140
+
+
+Estado 131
+
+   35 definicionInstruccion: PAUSA . PARENTIZQ expresion PARENTDER siguienteLin
+
+    PARENTIZQ  desplazar e ir al estado 141
+
+
+Estado 132
+
+   36 definicionInstruccion: MENSAJE . PARENTIZQ CADENACOMILLAS PARENTDER siguienteLin
+
+    PARENTIZQ  desplazar e ir al estado 142
+
+
+Estado 133
+
+   34 definicionInstruccion: SITUAR . PARENTIZQ VARIABLEMAYUS COMA expresion COMA expresion PARENTDER siguienteLin
+
+    PARENTIZQ  desplazar e ir al estado 143
+
+
+Estado 134
+
+   44 condicionSi: SI . PARENTIZQ expresion_bool PARENTDER $@3 '{' siguienteLineaCond secuenciaInstrucciones '}' siguienteLin
+
+    PARENTIZQ  desplazar e ir al estado 144
+
+
+Estado 135
+
+   39 secCondiciones: definicionInstruccion . secCondiciones
+
+    IDVariable  desplazar e ir al estado 130
+    PAUSA       desplazar e ir al estado 131
+    MENSAJE     desplazar e ir al estado 132
+    SITUAR      desplazar e ir al estado 133
+    SI          desplazar e ir al estado 134
+
+    $default  reduce usando la regla 40 (secCondiciones)
+
+    definicionInstruccion  ir al estado 135
+    secCondiciones         ir al estado 145
+    defCondicion           ir al estado 137
+    condicionSi            ir al estado 138
+
+
+Estado 136
+
+   31 definicionHabitacion: INIHABITACION $@1 PARENTIZQ expresion COMA expresion PARENTDER CADENACOMILLAS $@2 DOSPUNTOS siguienteLin secCondiciones . FINHABITACION siguienteLin
+
+    FINHABITACION  desplazar e ir al estado 146
+
+
+Estado 137
+
+   38 secCondiciones: defCondicion . secCondiciones
+
+    IDVariable  desplazar e ir al estado 130
+    PAUSA       desplazar e ir al estado 131
+    MENSAJE     desplazar e ir al estado 132
+    SITUAR      desplazar e ir al estado 133
+    SI          desplazar e ir al estado 134
+
+    $default  reduce usando la regla 40 (secCondiciones)
+
+    definicionInstruccion  ir al estado 135
+    secCondiciones         ir al estado 147
+    defCondicion           ir al estado 137
+    condicionSi            ir al estado 138
+
+
+Estado 138
+
+   41 defCondicion: condicionSi .
+   42             | condicionSi . condicionSino
+
+    SINO  desplazar e ir al estado 148
+
+    $default  reduce usando la regla 41 (defCondicion)
+
+    condicionSino  ir al estado 149
+
+
+Estado 139
+
+    3 siguienteLin: siguienteLin . '\n'
+   24 definicionMueble: VARIABLEMAYUS ASIGNACIONIGUAL MENOR RECTANGULO COMA expresion COMA expresion COMA COLOR MAYOR siguienteLin .
+
+    '\n'  desplazar e ir al estado 11
+
+    $default  reduce usando la regla 24 (definicionMueble)
+
+
+Estado 140
+
+   37 definicionInstruccion: IDVariable ASIGNACION . expresion siguienteLin
+
+    NUMERO      desplazar e ir al estado 43
+    REAL        desplazar e ir al estado 44
+    IDVariable  desplazar e ir al estado 46
+    '-'         desplazar e ir al estado 47
+    '('         desplazar e ir al estado 59
+
+    expresion  ir al estado 150
+
+
+Estado 141
+
+   35 definicionInstruccion: PAUSA PARENTIZQ . expresion PARENTDER siguienteLin
+
+    NUMERO      desplazar e ir al estado 43
+    REAL        desplazar e ir al estado 44
+    IDVariable  desplazar e ir al estado 46
+    '-'         desplazar e ir al estado 47
+    '('         desplazar e ir al estado 59
+
+    expresion  ir al estado 151
+
+
+Estado 142
+
+   36 definicionInstruccion: MENSAJE PARENTIZQ . CADENACOMILLAS PARENTDER siguienteLin
+
+    CADENACOMILLAS  desplazar e ir al estado 152
+
+
+Estado 143
+
+   34 definicionInstruccion: SITUAR PARENTIZQ . VARIABLEMAYUS COMA expresion COMA expresion PARENTDER siguienteLin
+
+    VARIABLEMAYUS  desplazar e ir al estado 153
+
+
+Estado 144
+
+   44 condicionSi: SI PARENTIZQ . expresion_bool PARENTDER $@3 '{' siguienteLineaCond secuenciaInstrucciones '}' siguienteLin
+
+    TRUE        desplazar e ir al estado 41
+    FALSE       desplazar e ir al estado 42
+    NUMERO      desplazar e ir al estado 43
+    REAL        desplazar e ir al estado 44
+    NOT         desplazar e ir al estado 45
+    IDVariable  desplazar e ir al estado 46
+    '-'         desplazar e ir al estado 47
+    '('         desplazar e ir al estado 48
+
+    expresion       ir al estado 61
+    expresion_bool  ir al estado 154
+
+
+Estado 145
+
+   39 secCondiciones: definicionInstruccion secCondiciones .
+
+    $default  reduce usando la regla 39 (secCondiciones)
+
+
+Estado 146
+
+   31 definicionHabitacion: INIHABITACION $@1 PARENTIZQ expresion COMA expresion PARENTDER CADENACOMILLAS $@2 DOSPUNTOS siguienteLin secCondiciones FINHABITACION . siguienteLin
+
+    '\n'  desplazar e ir al estado 7
+
+    siguienteLin  ir al estado 155
+
+
+Estado 147
+
+   38 secCondiciones: defCondicion secCondiciones .
+
+    $default  reduce usando la regla 38 (secCondiciones)
+
+
+Estado 148
+
+   46 condicionSino: SINO . $@4 '{' siguienteLineaCond secuenciaInstrucciones '}' siguienteLin
+
+    $default  reduce usando la regla 45 ($@4)
+
+    $@4  ir al estado 156
+
+
+Estado 149
+
+   42 defCondicion: condicionSi condicionSino .
+
+    $default  reduce usando la regla 42 (defCondicion)
+
+
+Estado 150
+
+   37 definicionInstruccion: IDVariable ASIGNACION expresion . siguienteLin
+   51 expresion: expresion . '+' expresion
+   52          | expresion . '-' expresion
+   53          | expresion . '*' expresion
+   54          | expresion . '/' expresion
+   55          | expresion . '%' expresion
+
+    '+'   desplazar e ir al estado 72
+    '-'   desplazar e ir al estado 73
+    '*'   desplazar e ir al estado 74
+    '/'   desplazar e ir al estado 75
+    '%'   desplazar e ir al estado 76
+    '\n'  desplazar e ir al estado 7
+
+    siguienteLin  ir al estado 157
+
+
+Estado 151
+
+   35 definicionInstruccion: PAUSA PARENTIZQ expresion . PARENTDER siguienteLin
+   51 expresion: expresion . '+' expresion
+   52          | expresion . '-' expresion
+   53          | expresion . '*' expresion
+   54          | expresion . '/' expresion
+   55          | expresion . '%' expresion
+
+    PARENTDER  desplazar e ir al estado 158
+    '+'        desplazar e ir al estado 72
+    '-'        desplazar e ir al estado 73
+    '*'        desplazar e ir al estado 74
+    '/'        desplazar e ir al estado 75
+    '%'        desplazar e ir al estado 76
+
+
+Estado 152
+
+   36 definicionInstruccion: MENSAJE PARENTIZQ CADENACOMILLAS . PARENTDER siguienteLin
+
+    PARENTDER  desplazar e ir al estado 159
+
+
+Estado 153
+
+   34 definicionInstruccion: SITUAR PARENTIZQ VARIABLEMAYUS . COMA expresion COMA expresion PARENTDER siguienteLin
+
+    COMA  desplazar e ir al estado 160
+
+
+Estado 154
+
+   44 condicionSi: SI PARENTIZQ expresion_bool . PARENTDER $@3 '{' siguienteLineaCond secuenciaInstrucciones '}' siguienteLin
+   65 expresion_bool: expresion_bool . IGUAL expresion_bool
+   66               | expresion_bool . DISTINTO expresion_bool
+   67               | expresion_bool . OR expresion_bool
+   68               | expresion_bool . AND expresion_bool
+
+    AND        desplazar e ir al estado 78
+    OR         desplazar e ir al estado 79
+    IGUAL      desplazar e ir al estado 80
+    DISTINTO   desplazar e ir al estado 81
+    PARENTDER  desplazar e ir al estado 161
+
+
+Estado 155
+
+    3 siguienteLin: siguienteLin . '\n'
+   31 definicionHabitacion: INIHABITACION $@1 PARENTIZQ expresion COMA expresion PARENTDER CADENACOMILLAS $@2 DOSPUNTOS siguienteLin secCondiciones FINHABITACION siguienteLin .
+
+    '\n'  desplazar e ir al estado 11
+
+    $default  reduce usando la regla 31 (definicionHabitacion)
+
+
+Estado 156
+
+   46 condicionSino: SINO $@4 . '{' siguienteLineaCond secuenciaInstrucciones '}' siguienteLin
+
+    '{'  desplazar e ir al estado 162
+
+
+Estado 157
+
+    3 siguienteLin: siguienteLin . '\n'
+   37 definicionInstruccion: IDVariable ASIGNACION expresion siguienteLin .
+
+    '\n'  desplazar e ir al estado 11
+
+    $default  reduce usando la regla 37 (definicionInstruccion)
+
+
+Estado 158
+
+   35 definicionInstruccion: PAUSA PARENTIZQ expresion PARENTDER . siguienteLin
+
+    '\n'  desplazar e ir al estado 7
+
+    siguienteLin  ir al estado 163
+
+
+Estado 159
+
+   36 definicionInstruccion: MENSAJE PARENTIZQ CADENACOMILLAS PARENTDER . siguienteLin
+
+    '\n'  desplazar e ir al estado 7
+
+    siguienteLin  ir al estado 164
+
+
+Estado 160
+
+   34 definicionInstruccion: SITUAR PARENTIZQ VARIABLEMAYUS COMA . expresion COMA expresion PARENTDER siguienteLin
+
+    NUMERO      desplazar e ir al estado 43
+    REAL        desplazar e ir al estado 44
+    IDVariable  desplazar e ir al estado 46
+    '-'         desplazar e ir al estado 47
+    '('         desplazar e ir al estado 59
+
+    expresion  ir al estado 165
+
+
+Estado 161
+
+   44 condicionSi: SI PARENTIZQ expresion_bool PARENTDER . $@3 '{' siguienteLineaCond secuenciaInstrucciones '}' siguienteLin
+
+    $default  reduce usando la regla 43 ($@3)
+
+    $@3  ir al estado 166
+
+
+Estado 162
+
+   46 condicionSino: SINO $@4 '{' . siguienteLineaCond secuenciaInstrucciones '}' siguienteLin
+
+    $default  reduce usando la regla 4 (siguienteLineaCond)
+
+    siguienteLineaCond  ir al estado 167
+
+
+Estado 163
+
+    3 siguienteLin: siguienteLin . '\n'
+   35 definicionInstruccion: PAUSA PARENTIZQ expresion PARENTDER siguienteLin .
+
+    '\n'  desplazar e ir al estado 11
+
+    $default  reduce usando la regla 35 (definicionInstruccion)
+
+
+Estado 164
+
+    3 siguienteLin: siguienteLin . '\n'
+   36 definicionInstruccion: MENSAJE PARENTIZQ CADENACOMILLAS PARENTDER siguienteLin .
+
+    '\n'  desplazar e ir al estado 11
+
+    $default  reduce usando la regla 36 (definicionInstruccion)
+
+
+Estado 165
+
+   34 definicionInstruccion: SITUAR PARENTIZQ VARIABLEMAYUS COMA expresion . COMA expresion PARENTDER siguienteLin
+   51 expresion: expresion . '+' expresion
+   52          | expresion . '-' expresion
+   53          | expresion . '*' expresion
+   54          | expresion . '/' expresion
+   55          | expresion . '%' expresion
+
+    COMA  desplazar e ir al estado 168
+    '+'   desplazar e ir al estado 72
+    '-'   desplazar e ir al estado 73
+    '*'   desplazar e ir al estado 74
+    '/'   desplazar e ir al estado 75
+    '%'   desplazar e ir al estado 76
+
+
+Estado 166
+
+   44 condicionSi: SI PARENTIZQ expresion_bool PARENTDER $@3 . '{' siguienteLineaCond secuenciaInstrucciones '}' siguienteLin
+
+    '{'  desplazar e ir al estado 169
+
+
+Estado 167
+
+    5 siguienteLineaCond: siguienteLineaCond . '\n'
+   46 condicionSino: SINO $@4 '{' siguienteLineaCond . secuenciaInstrucciones '}' siguienteLin
+
+    IDVariable  desplazar e ir al estado 130
+    PAUSA       desplazar e ir al estado 131
+    MENSAJE     desplazar e ir al estado 132
+    SITUAR      desplazar e ir al estado 133
+    '\n'        desplazar e ir al estado 5
+
+    secuenciaInstrucciones  ir al estado 170
+    definicionInstruccion   ir al estado 171
+
+
+Estado 168
+
+   34 definicionInstruccion: SITUAR PARENTIZQ VARIABLEMAYUS COMA expresion COMA . expresion PARENTDER siguienteLin
+
+    NUMERO      desplazar e ir al estado 43
+    REAL        desplazar e ir al estado 44
+    IDVariable  desplazar e ir al estado 46
+    '-'         desplazar e ir al estado 47
+    '('         desplazar e ir al estado 59
+
+    expresion  ir al estado 172
+
+
+Estado 169
+
+   44 condicionSi: SI PARENTIZQ expresion_bool PARENTDER $@3 '{' . siguienteLineaCond secuenciaInstrucciones '}' siguienteLin
+
+    $default  reduce usando la regla 4 (siguienteLineaCond)
+
+    siguienteLineaCond  ir al estado 173
+
+
+Estado 170
+
+   33 secuenciaInstrucciones: secuenciaInstrucciones . definicionInstruccion
+   46 condicionSino: SINO $@4 '{' siguienteLineaCond secuenciaInstrucciones . '}' siguienteLin
+
+    IDVariable  desplazar e ir al estado 130
+    PAUSA       desplazar e ir al estado 131
+    MENSAJE     desplazar e ir al estado 132
+    SITUAR      desplazar e ir al estado 133
+    '}'         desplazar e ir al estado 174
+
+    definicionInstruccion  ir al estado 175
+
+
+Estado 171
+
+   32 secuenciaInstrucciones: definicionInstruccion .
+
+    $default  reduce usando la regla 32 (secuenciaInstrucciones)
+
+
+Estado 172
+
+   34 definicionInstruccion: SITUAR PARENTIZQ VARIABLEMAYUS COMA expresion COMA expresion . PARENTDER siguienteLin
+   51 expresion: expresion . '+' expresion
+   52          | expresion . '-' expresion
+   53          | expresion . '*' expresion
+   54          | expresion . '/' expresion
+   55          | expresion . '%' expresion
+
+    PARENTDER  desplazar e ir al estado 176
+    '+'        desplazar e ir al estado 72
+    '-'        desplazar e ir al estado 73
+    '*'        desplazar e ir al estado 74
+    '/'        desplazar e ir al estado 75
+    '%'        desplazar e ir al estado 76
+
+
+Estado 173
+
+    5 siguienteLineaCond: siguienteLineaCond . '\n'
+   44 condicionSi: SI PARENTIZQ expresion_bool PARENTDER $@3 '{' siguienteLineaCond . secuenciaInstrucciones '}' siguienteLin
+
+    IDVariable  desplazar e ir al estado 130
+    PAUSA       desplazar e ir al estado 131
+    MENSAJE     desplazar e ir al estado 132
+    SITUAR      desplazar e ir al estado 133
+    '\n'        desplazar e ir al estado 5
+
+    secuenciaInstrucciones  ir al estado 177
+    definicionInstruccion   ir al estado 171
+
+
+Estado 174
+
+   46 condicionSino: SINO $@4 '{' siguienteLineaCond secuenciaInstrucciones '}' . siguienteLin
+
+    '\n'  desplazar e ir al estado 7
+
+    siguienteLin  ir al estado 178
+
+
+Estado 175
+
+   33 secuenciaInstrucciones: secuenciaInstrucciones definicionInstruccion .
+
+    $default  reduce usando la regla 33 (secuenciaInstrucciones)
+
+
+Estado 176
+
+   34 definicionInstruccion: SITUAR PARENTIZQ VARIABLEMAYUS COMA expresion COMA expresion PARENTDER . siguienteLin
+
+    '\n'  desplazar e ir al estado 7
+
+    siguienteLin  ir al estado 179
+
+
+Estado 177
+
+   33 secuenciaInstrucciones: secuenciaInstrucciones . definicionInstruccion
+   44 condicionSi: SI PARENTIZQ expresion_bool PARENTDER $@3 '{' siguienteLineaCond secuenciaInstrucciones . '}' siguienteLin
+
+    IDVariable  desplazar e ir al estado 130
+    PAUSA       desplazar e ir al estado 131
+    MENSAJE     desplazar e ir al estado 132
+    SITUAR      desplazar e ir al estado 133
+    '}'         desplazar e ir al estado 180
+
+    definicionInstruccion  ir al estado 175
+
+
+Estado 178
+
+    3 siguienteLin: siguienteLin . '\n'
+   46 condicionSino: SINO $@4 '{' siguienteLineaCond secuenciaInstrucciones '}' siguienteLin .
+
+    '\n'  desplazar e ir al estado 11
+
+    $default  reduce usando la regla 46 (condicionSino)
+
+
+Estado 179
+
+    3 siguienteLin: siguienteLin . '\n'
+   34 definicionInstruccion: SITUAR PARENTIZQ VARIABLEMAYUS COMA expresion COMA expresion PARENTDER siguienteLin .
+
+    '\n'  desplazar e ir al estado 11
+
+    $default  reduce usando la regla 34 (definicionInstruccion)
+
+
+Estado 180
+
+   44 condicionSi: SI PARENTIZQ expresion_bool PARENTDER $@3 '{' siguienteLineaCond secuenciaInstrucciones '}' . siguienteLin
+
+    '\n'  desplazar e ir al estado 7
+
+    siguienteLin  ir al estado 181
+
+
+Estado 181
+
+    3 siguienteLin: siguienteLin . '\n'
+   44 condicionSi: SI PARENTIZQ expresion_bool PARENTDER $@3 '{' siguienteLineaCond secuenciaInstrucciones '}' siguienteLin .
+
+    '\n'  desplazar e ir al estado 11
+
+    $default  reduce usando la regla 44 (condicionSi)

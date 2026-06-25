@@ -1,0 +1,29 @@
+
+OBJ = expresiones.o lexico.o contenedor.o
+
+
+
+expresiones : $(OBJ)     				#segunda fase de la traducción. Generación del código ejecutable 
+	g++ -oexpresiones $(OBJ)
+	./expresiones basica.amu
+
+expresiones.o : expresiones.c        	#primera fase de la traducción del analizador sintáctico
+	g++ -c -oexpresiones.o  expresiones.c 
+	
+lexico.o : lex.yy.c						#primera fase de la traducción del analizador léxico
+	g++ -c -olexico.o  lex.yy.c 	
+
+contenedor.o : contenedor.cpp			#se obtiene la compilacion del contenerdor
+	g++ -c contenedor.cpp -ocontenedor.o
+
+expresiones.c : expresiones.y       	#obtenemos el analizador sintáctico en C
+	bison -d -v -oexpresiones.c expresiones.y
+
+
+lex.yy.c: lexico.l						#obtenemos el analizador léxico en C
+	flex lexico.l
+
+clean : 
+	rm  -f  *.c *.o  expresiones
+
+

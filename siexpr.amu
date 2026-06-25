@@ -1,0 +1,50 @@
+VARIABLES
+%% Fichero de ejemplo de la versión básica sin errores
+%% Con expresiones y la estructura de control si si_no
+
+Entero ancho <- 100
+Bool enc 
+enc <- false or ancho >= 50
+
+Real tiempo <- 4.0
+tiempo <- tiempo 
+
+Entero xxx <- 100
+
+MUEBLES
+
+M1 = < rectangulo, 50+50, 2*50, azul>
+M2 = < circulo, 200.00/2, rojo>
+
+
+	M3 = <rectangulo, 200., 200.0, rojo>
+	M4 = <circulo, 200, amarillo>
+
+HABITACION (ancho*10, 10*ancho) "Primera habitación" : %% Primera habitación
+	mensaje ("Aquí empieza la habitación") %% Primera instrucción
+	pausa (tiempo)
+	enc <- falso
+	situar(M1,100,100)
+	xxx <- 500
+	situar(M2,500, xxx)
+	
+	
+	
+	si (xxx < 200) {
+	   mensaje("Ejecuta las instrucciones del si")
+	}
+	si_no {
+		mensaje("Ejecuta las instrucciones del si no (¡Error!) ")	
+	}
+	xxx <- 500
+	si (xxx+1 > 700) {
+	   mensaje("Ejecuta las instrucciones del si que no deberia ejecutar (¡Error!)")
+	   xxx <- 0
+	}
+	si_no {
+	   mensaje("Ejecuta las instrucciones del si no ")
+		xxx <- 1
+	}
+	pausa(4)
+		
+FINHABITACION
